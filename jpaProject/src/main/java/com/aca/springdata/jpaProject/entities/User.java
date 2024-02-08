@@ -1,7 +1,11 @@
 package com.aca.springdata.jpaProject.entities;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,6 +19,8 @@ public class User {
 	private String BIO;
 	private String EMAIL;
 	private String AREA_OF_INTEREST;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<OrderHistory> orders;
 
 	public long getUSER_ID() {
 		return USER_ID;
@@ -62,6 +68,14 @@ public class User {
 
 	public void setAREA_OF_INTEREST(String aREA_OF_INTEREST) {
 		AREA_OF_INTEREST = aREA_OF_INTEREST;
+	}
+
+	public List<OrderHistory> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderHistory> orders) {
+		this.orders = orders;
 	}
 
 }

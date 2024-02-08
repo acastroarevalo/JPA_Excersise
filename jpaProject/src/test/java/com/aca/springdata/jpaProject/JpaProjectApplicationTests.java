@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.aca.springdata.jpaProject.entities.OrderHistory;
 import com.aca.springdata.jpaProject.entities.Products;
 import com.aca.springdata.jpaProject.entities.User;
+import com.aca.springdata.jpaProject.repos.OrderHistoryRepository;
 import com.aca.springdata.jpaProject.repos.ProductsRepository;
 import com.aca.springdata.jpaProject.repos.UserRepository;
 
@@ -25,25 +29,38 @@ class JpaProjectApplicationTests {
 	UserRepository userRepository;
 	@Autowired
 	ProductsRepository productsRepository;
+	@Autowired
+	OrderHistoryRepository orderRepository;
 
 	@Test
 	void contextLoads() {
 	}
 	
+	@Test
+	public void testCreateOrder() {
+		OrderHistory order = new OrderHistory();
+		Timestamp time = new Timestamp(new Date().getTime());
+		order.setORDER_ID(4);
+		order.setORDER_DATE(time);
+		order.setUser(userRepository.findById(4l).get());
+		order.setProduct(productsRepository.findById(1l).get());
+		
+		orderRepository.save(order);
+	}
+	
 //USER TESTS ___________________________________________________________________________________________________
 	@Test
 	public void testCreateUser() {
-		List<User> emails = userRepository.findByEMAIL("bulls@gmail.com");
+		User user = new User();
+		user.setUSER_ID(4);
+		user.setNAME("Dan");
+		user.setLAST_NAME("Deeves");
+		user.setEMAIL("dunes@gmail.com");
+		user.setBIO("Person4");
+		user.setAREA_OF_INTEREST("Stuff4");
+		
+		List<User> emails = userRepository.findByEMAIL(user.getEMAIL());
 		if (emails.isEmpty()) {
-			
-			User user = new User();
-			user.setUSER_ID(2);
-			user.setNAME("Beck");
-			user.setLAST_NAME("Blues");
-			user.setEMAIL("bulls@gmail.com");
-			user.setBIO("Person2");
-			user.setAREA_OF_INTEREST("Stuff2");
-			
 			userRepository.save(user);
 		} else {
 			System.out.println("----------------------------------------------\n"
@@ -63,7 +80,7 @@ class JpaProjectApplicationTests {
 	
 	@Test
 	public void testDeleteUser() {
-		userRepository.deleteById(1L);
+		userRepository.deleteById(4L);
 	}
 	
 //PRODUCT TESTS _______________________________________________________________________________________________

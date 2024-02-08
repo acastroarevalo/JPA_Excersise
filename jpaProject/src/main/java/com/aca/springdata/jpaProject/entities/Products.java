@@ -1,8 +1,10 @@
 package com.aca.springdata.jpaProject.entities;
 
+import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Products {
@@ -16,6 +18,8 @@ public class Products {
 	private String DESCRIPTION;
 	private long TOTAL_PRODUCTS_INVENTORY;
 	private boolean STATUS;
+	@OneToMany(mappedBy = "product")
+	private List<OrderHistory> orders;
 
 	public long getPRODUCT_ID() {
 		return PRODUCT_ID;
@@ -71,6 +75,14 @@ public class Products {
 
 	public void setSTATUS(boolean sTATUS) {
 		STATUS = sTATUS;
+	}
+
+	public List<OrderHistory> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderHistory> orders) {
+		this.orders = orders;
 	}
 	
 }
