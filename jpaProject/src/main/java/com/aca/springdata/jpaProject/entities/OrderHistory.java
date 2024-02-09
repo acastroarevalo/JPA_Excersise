@@ -3,8 +3,6 @@ package com.aca.springdata.jpaProject.entities;
 import java.sql.Timestamp;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,6 +16,7 @@ public class OrderHistory {
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long ORDER_ID;
 	private Timestamp ORDER_DATE;
+	
 	@ManyToOne
 	@JoinColumn(name = "USER_ID")
 	private User user;

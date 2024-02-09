@@ -40,9 +40,9 @@ class JpaProjectApplicationTests {
 	public void testCreateOrder() {
 		OrderHistory order = new OrderHistory();
 		Timestamp time = new Timestamp(new Date().getTime());
-		order.setORDER_ID(4);
+		order.setORDER_ID(2);
 		order.setORDER_DATE(time);
-		order.setUser(userRepository.findById(4l).get());
+		order.setUser(userRepository.findById(2l).get());
 		order.setProduct(productsRepository.findById(1l).get());
 		
 		orderRepository.save(order);
@@ -86,43 +86,43 @@ class JpaProjectApplicationTests {
 //PRODUCT TESTS _______________________________________________________________________________________________
 	@Test
 	public void testCreateProduct() {
-		List<Products> names = productsRepository.findByNAME("Apple");
+		Products product = new Products();
+		product.setPRODUCT_ID(4);
+		product.setNAME("Doll");
+		product.setPRICE(5d);
+		product.setDESCRIPTION("dollsfactoryTM");
+		product.setTOTAL_PRODUCTS_INVENTORY(1);
+		product.setSTATUS(true);
+		
+		File file = new File("C:\\Users\\acastroarevalo\\Documents\\Notes\\blue.png");
+		byte fileContent[] = new byte[(int)file.length()];
+		
+		try {
+			FileInputStream inputStream = new FileInputStream(file);
+			inputStream.read(fileContent);
+			product.setIMAGE(fileContent);
+			inputStream.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		List<Products> names = productsRepository.findByNAME(product.getNAME());
 		if (names.isEmpty()) {
-			Products product = new Products();
-			product.setPRODUCT_ID(1);
-			product.setNAME("Apple");
-			product.setPRICE(5d);
-			product.setDESCRIPTION("Red");
-			product.setTOTAL_PRODUCTS_INVENTORY(1);
-			product.setSTATUS(true);
-			
-			File file = new File("C:\\Users\\acastroarevalo\\Documents\\Notes\\blue.png");
-			byte fileContent[] = new byte[(int)file.length()];
-			
-			try {
-				FileInputStream inputStream = new FileInputStream(file);
-				inputStream.read(fileContent);
-				product.setIMAGE(fileContent);
-				inputStream.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 			productsRepository.save(product);
 		}else {
-			Products product = productsRepository.findByNAME("Apple").get(0);
-			product.setTOTAL_PRODUCTS_INVENTORY(product.getTOTAL_PRODUCTS_INVENTORY() + 1);
-			productsRepository.save(product);
+			Products existing_product = productsRepository.findByNAME(product.getNAME()).get(0);
+			existing_product.setTOTAL_PRODUCTS_INVENTORY(existing_product.getTOTAL_PRODUCTS_INVENTORY() + 1);
+			productsRepository.save(existing_product);
 		}
 	}
 	
 	@Test
 	public void testDeleteProduct() {
-		Products product = productsRepository.findById(1L).get();
+		Products product = productsRepository.findById(4L).get();
 		product.setSTATUS(false);
 		productsRepository.save(product);
 	}
